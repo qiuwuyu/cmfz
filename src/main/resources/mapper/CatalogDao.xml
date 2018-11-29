@@ -5,11 +5,10 @@
 <mapper namespace="com.baizhi.dao.CatalogDao">
 
 	<resultMap id="catalogAll" type="com.baizhi.entity.Catalog">
-		<id column="id" property="id"/>
-		<result column="title" property="title"/>
-		<result column="iconCls" property="iconCls"/>
-		<result column="url" property="url"/>
-		<result column="parent_id" property="parentId"/>
+		<id column="supid" property="id"/>
+		<result column="suptitle" property="title"/>
+		<result column="supiconCls" property="iconCls"/>
+		<result column="supurl" property="url"/>
 		<collection property="catalogList" ofType="com.baizhi.entity.Catalog">
 			<id column="id" property="id"/>
 			<result column="title" property="title"/>
@@ -20,7 +19,10 @@
 	</resultMap>
 	<!-- 查询账户 -->
 	<select id="getCatalogAll" resultMap="catalogAll">
-		select * from catalog where parent_id is null
+		/*select * from catalog where parent_id is null*/
+		select c1.id supid,c1.title suptitle,c1.iconCls supiconCls,c1.url supurl,c2.* from catalog c1 left join catalog c2
+		on c1.id = c2.parent_id
+		where c1.parent_id is null
 	</select>
 </mapper>
 	

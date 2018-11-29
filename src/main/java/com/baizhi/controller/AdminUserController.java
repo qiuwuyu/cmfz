@@ -22,7 +22,7 @@ public class AdminUserController {
             AdminUser user = adminUserService.loginAdmin(adminUser);
             if(user!=null){
                 session.setAttribute("adminuser",user);
-                return "forward:/main/main.jsp";
+                return "redirect:/main/main.jsp";
             }
         }
         return "login";

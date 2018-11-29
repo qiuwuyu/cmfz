@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.AlbumMapper" >
+  <resultMap id="BaseResultMap" type="com.baizhi.entity.Album" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="broadcast" property="broadcast" jdbcType="VARCHAR" />
+    <result column="brief" property="brief" jdbcType="VARCHAR" />
+    <result column="publishdate" property="publishdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="AlbumAll" type="com.baizhi.entity.Album" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="coverimg" property="coverimg" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="broadcast" property="broadcast" jdbcType="VARCHAR" />
+    <result column="brief" property="brief" jdbcType="VARCHAR" />
+    <result column="publishdate" property="publishdate" jdbcType="TIMESTAMP" />
+    <collection property="children" ofType="com.baizhi.entity.Section">
+        <id column="sid" property="id" jdbcType="VARCHAR" />
+        <result column="stitle" property="title" jdbcType="VARCHAR" />
+        <result column="ssize" property="size" jdbcType="VARCHAR" />
+        <result column="sduration" property="duration" jdbcType="VARCHAR" />
+        <result column="sdownpath" property="downpath" jdbcType="VARCHAR" />
+        <result column="suploaddate" property="uploaddate" jdbcType="TIMESTAMP" />
+        <result column="salbum_id" property="albumId" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+
+  <!--自己写的-->
+  <select id="getAlbumAll" resultMap="AlbumAll">
+      select alb.*,sec.id sid,sec.title stitle,sec.size ssize,sec.duration sduration,sec.downpath sdownpath,sec.uploaddate suploaddate,sec.album_id aalbum_id from album alb left JOIN section sec on alb.id = sec.album_id ORDER BY alb.id LIMIT #{start},#{pageSize}
+  </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--生成的-->
+  <sql id="Base_Column_List" >
+    id, title, coverimg, count, score, author, broadcast, brief, publishdate
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from album
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from album
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baizhi.entity.Album" >
+    insert into album (id, title, coverimg, 
+      count, score, author, 
+      broadcast, brief, publishdate
+      )
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{coverimg,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{score,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{broadcast,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, #{publishdate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baizhi.entity.Album" >
+    insert into album
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="coverimg != null" >
+        coverimg,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="broadcast != null" >
+        broadcast,
+      </if>
+      <if test="brief != null" >
+        brief,
+      </if>
+      <if test="publishdate != null" >
+        publishdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="coverimg != null" >
+        #{coverimg,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="broadcast != null" >
+        #{broadcast,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null" >
+        #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="publishdate != null" >
+        #{publishdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.entity.Album" >
+    update album
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="coverimg != null" >
+        coverimg = #{coverimg,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="broadcast != null" >
+        broadcast = #{broadcast,jdbcType=VARCHAR},
+      </if>
+      <if test="brief != null" >
+        brief = #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="publishdate != null" >
+        publishdate = #{publishdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baizhi.entity.Album" >
+    update album
+    set title = #{title,jdbcType=VARCHAR},
+      coverimg = #{coverimg,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      score = #{score,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      broadcast = #{broadcast,jdbcType=VARCHAR},
+      brief = #{brief,jdbcType=VARCHAR},
+      publishdate = #{publishdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

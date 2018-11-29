@@ -9,39 +9,60 @@
 <script type="text/javascript" src="../js/jquery.min.js"></script>   
 <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>  
 <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript">
-	/*菜单处理*/
+    <script type="text/javascript" src="../js/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../js/jquery.edatagrid.js"></script>
+
+    <script type="text/javascript">
     $(function(){
+        /*菜单处理*/
         $.ajax({
             url:"/cmfz/catalog/getCatalog",
             type:"post",
             success:function(data) {
-                /*alert(data.catalogAll.length);
-                alert(data);
-                alert(data.catalogAll);
-                alert(data.catalogAll[1].catalogList);
-                alert(data.catalogAll[1].title);
-                alert(data.catalogAll[1].catalogList.title);*/
-                //alert(data.catalogAll[0].iconCls);
                 for (var i = 0; i < data.catalogAll.length; i++) {
                     var str="";
                     for(var j=0;j<data.catalogAll[i].catalogList.length;j++){
-                        str +="<a style='margin-left: 30px' " + " href='${pageContext.request.contextPath}/main/"+  data.catalogAll[i].catalogList[j].url+"'onclick='test()'>"+  data.catalogAll[i].catalogList[j].title+" </a>"+"<br/>";
+                        var url = data.catalogAll[i].catalogList[j].url;
+                        var title = data.catalogAll[i].catalogList[j].title;
+                        var icon = data.catalogAll[i].catalogList[j].iconCls;
+
+                        str +="<p style='align-content: center'>"+
+                            "<a id=\"btn\" href=\"#\" class=\"easyui-linkbutton\" " +
+                            "onclick='addTabs(\""+url+"\",\""+icon+"\",\""+title+"\")'    " +
+                            "data-options=\"iconCls:'icon-search'\">"
+                            +title+"</a>"+"</p>";
                     }
                     $('#aa').accordion('add', {
-
                         iconCls:data.catalogAll[i].iconCls,
                         title:data.catalogAll[i].title,
                         content:str,
                         selected: false
                     });
-
                 }
             }
         })
+        //菜单处理===END===
     })
-	/*菜单处理===END===*/
-
+    //选项卡
+    function addTabs(url,iconCls,title){
+        var bool = $('#tt').tabs('exists',title);
+        //alert("bool为："+bool)
+        var getLideshow = "${pageContext.request.contextPath}"+url;
+        //alert(getLideshow);
+        if(bool){
+            $('#tt').tabs('select',title)
+        }else{
+            $('#tt').tabs('add',{
+                title: title,
+                selected: true,
+                href:"${pageContext.request.contextPath}"+url,
+                fit:true,
+                closable:true,
+                iconCls: iconCls
+            });
+        }
+    }
+    //选项卡===END===
 </script>
 
 </head>
@@ -61,8 +82,10 @@
     </div>
     <div data-options="region:'center'">
     	<div id="tt" class="easyui-tabs" data-options="fit:true,narrow:true,pill:true">   
-		    <div title="主页" data-options="iconCls:'icon-neighbourhood',"  style="background-image:url(image/shouye.jpg);background-repeat: no-repeat;background-size:100% 100%;"></div>
-		</div>  
+		    <div title="主页" data-options="iconCls:'icon-neighbourhood',">
+
+            </div>
+		</div>
     </div>   
 </body> 
 </html>
